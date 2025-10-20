@@ -7,6 +7,7 @@ import { FaUser, FaEnvelope, FaPhone, FaLock, FaEye, FaEyeSlash, FaUserPlus, FaS
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Link from "next/link";
+import { RegisterUser } from "@/services/authService";
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string().min(2, "Too short!").max(50, "Too long!").required("Full Name is required"),
@@ -28,19 +29,32 @@ const SignupSchema = Yup.object().shape({
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
 
+  const RegistrationPayload = (values) => { {
+    return {
+      name: values.name,
+      email: values.email,
+      phone: values.phone,
+      password: values.password,
+    };
+  } };
+
   const handleSubmit = async (values) => {
+    debugger
     try {
       // Validate using Yup manually
-      await SignupSchema.validate(values, { abortEarly: false });
-      // If validation passes
-      toast.success("Account created successfully!", { autoClose: 2000 });
+      const Payload =   RegistrationPayload(values);
+      const response = await RegisterUser(Payload);
+      if(response){
+        toast.success(response.message, { autoClose: 2000 });
+      }
+      console.log("Registration successful:", response);
     } catch (err) {
       if (err.inner) {
         err.inner.forEach((error) => {
           toast.error(error.message, { autoClose: 3000 });
         });
       } else {
-        toast.error(err.message, { autoClose: 3000 });
+        toast.error(response.message, { autoClose: 3000 });
       }
     }
   };
