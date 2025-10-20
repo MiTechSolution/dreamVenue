@@ -4,12 +4,12 @@ import Link from "next/link";
 
 
 const galleryItems = [
-    { src: "/images/gallery/grand-ballroom.jpeg", alt: "Grand Ballroom" },
-    { src: "/images/gallery/reception-area.jpeg", alt: "Reception Area" },
-    { src: "/images/gallery/dining-setup.jpeg", alt: "Dining Setup" },
-    { src: "/images/gallery/stage-lighting.jpeg", alt: "Stage & Lighting" },
-    { src: "/images/gallery/outdoor-ceremony.jpg", alt: "Outdoor Ceremony Space" },
-    { src: "/images/gallery/vip-lounge.jpg", alt: "VIP Lounge" },
+    { src: "/images/grand-ballroom.jpeg", alt: "Grand Ballroom" },
+    { src: "/images/reception-area.jpeg", alt: "Reception Area" },
+    { src: "/images/dining-setup.jpeg", alt: "Dining Setup" },
+    { src: "/images/stage-lighting.jpeg", alt: "Stage & Lighting" },
+    { src: "/images/outdoor-ceremony.jpg", alt: "Outdoor Ceremony Space" },
+    { src: "/images/vip-lounge.jpg", alt: "VIP Lounge" },
   ];
 
 

@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import { FaUser, FaQuoteLeft, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 
-import clientReviews from "../data/user"
+import {clientReviews} from "@/Assets/data"
 
 
 
@@ -19,7 +19,7 @@ const Reviews = () => {
              prevIndex < clientReviews.length -1 ? prevIndex + 1 :0
             );
         },5000);
-        return()=> clearInterval(interval);
+        return()=> clearInterval(interval); 
     }, []);
 
     const prevTestimonial = () => {
