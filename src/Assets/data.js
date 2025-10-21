@@ -109,3 +109,51 @@ export const services = [
     icon: <FaCheckCircle />,
   },
 ];
+
+
+
+// gallery
+export const galleryData = [
+  {
+    id: 1,
+    title: "Grand Ballroom",
+    description: "A luxurious setting for grand wedding receptions.",
+    category: "wedding",
+    image: "/images/grand-ballroom.jpeg",
+  },
+  {
+    id: 2,
+    title: "Reception Area",
+    description: "Elegant and spacious reception area for welcoming guests.",
+    category: "wedding",
+    image: "/images/reception-area.jpeg",
+  },
+  {
+    id: 3,
+    title: "Dining Setup",
+    description: "Beautifully arranged dining setup for formal events.",
+    category: "corporate",
+    image: "/images/dining-setup.jpeg",
+  },
+  {
+    id: 4,
+    title: "Stage Lighting",
+    description: "Professional lighting setup for memorable moments.",
+    category: "corporate",
+    image: "/images/stage-lighting.jpeg",
+  },
+  {
+    id: 5,
+    title: "Outdoor Ceremony",
+    description: "Romantic outdoor wedding setup surrounded by nature.",
+    category: "wedding",
+    image: "/images/outdoor-ceremony.jpg",
+  },
+  {
+    id: 6,
+    title: "VIP Lounge",
+    description: "Exclusive VIP area for premium guests.",
+    category: "other",
+    image: "/images/vip-lounge.jpg",
+  },
+];

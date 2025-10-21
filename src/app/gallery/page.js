@@ -1,8 +1,16 @@
+
+import Images from '@/components/gallery/Images'
+import Footer from '@/components/home/Footer'
+import Navbar from '@/components/home/Navbar'
 import React from 'react'
 
 const page = () => {
   return (
-    <div>page</div>
+    <>
+   <Navbar/>
+   <Images/>
+   <Footer/>
+   </>
   )
 }
 
