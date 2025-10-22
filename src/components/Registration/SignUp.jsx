@@ -82,11 +82,11 @@ const Signup = () => {
   });
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black px-4 pt-24">
+    <div className="min-h-screen flex items-center justify-center bg-black px-2.5 pt-24">
       <div className="w-full max-w-md bg-gradient-to-br from-[#1A1A1A] to-[#0A0A0A] border gold-border shadow-2xl rounded-2xl p-8">
-      <div className="max-w-md mx-auto text-center mb-10 fade-in">
-                <h1 className="text-4xl font-cinzel font-bold mb-4 gold-gradient">Create Account</h1>
-                <p className="text-gray-400">Join GrandVenue Hall to book our luxurious venue for your special events</p>
+      <div className="max-w-md mx-auto text-center mb-3 fade-in">
+                <h1 className="text-4xl font-cinzel font-bold mb-2 gold-gradient">Create Account</h1>
+                {/* <p className="text-gray-400">Join GrandVenue Hall to book our luxurious venue for your special events</p> */}
             </div>
 
         <form onSubmit={formik.handleSubmit} className="space-y-5">
@@ -99,7 +99,7 @@ const Signup = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               placeholder="Full Name"
-              className="w-full p-3 pl-10 rounded-lg bg-gray-700 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold focus:border-gold"
+              className="w-full p-1 pl-10 rounded-lg bg-gray-700 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold focus:border-gold"
             />
             {formik.touched.name && formik.errors.name && (
               <div className="text-red-500 text-sm mt-1">{formik.errors.name}</div>
@@ -116,7 +116,7 @@ const Signup = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               placeholder="Email Address"
-              className="w-full p-3 pl-10 rounded-lg bg-gray-700 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold focus:border-gold"
+              className="w-full p-1 pl-10 rounded-lg bg-gray-700 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold focus:border-gold"
             />
             {formik.touched.email && formik.errors.email && (
               <div className="text-red-500 text-sm mt-1">{formik.errors.email}</div>
@@ -133,7 +133,7 @@ const Signup = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               placeholder="Phone Number"
-              className="w-full p-3 pl-10 rounded-lg bg-gray-700 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold focus:border-gold"
+              className="w-full p-1 pl-10 rounded-lg bg-gray-700 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold focus:border-gold"
             />
             {formik.touched.phone && formik.errors.phone && (
               <div className="text-red-500 text-sm mt-1">{formik.errors.phone}</div>
@@ -150,7 +150,7 @@ const Signup = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               placeholder="Password"
-              className="w-full p-3 pl-10 rounded-lg bg-gray-700 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold focus:border-gold"
+              className="w-full p-1 pl-10 rounded-lg bg-gray-700 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold focus:border-gold"
             />
             <button
               type="button"
@@ -165,18 +165,18 @@ const Signup = () => {
           </div>
 
           {/* Live Password Rules */}
-          <div className="text-sm mt-1 space-y-1">
+          <div className="text-sm mt-1 flex gap-0.5 flex-wrap justify-center space-y-1">
             <p className={formik.values.password.length >= 8 ? "text-green-500" : "text-red-500"}>
-              • At least 8 characters
+              At least 8 characters
             </p>
             <p className={/[A-Z]/.test(formik.values.password) ? "text-green-500" : "text-red-500"}>
-              • Uppercase letter
+              | Uppercase letter
             </p>
             <p className={/[a-z]/.test(formik.values.password) ? "text-green-500" : "text-red-500"}>
-              • Lowercase letter
+              | Lowercase letter
             </p>
             <p className={/[0-9]/.test(formik.values.password) ? "text-green-500" : "text-red-500"}>
-              • Number
+              | Number
             </p>
             <p
               className={
@@ -185,7 +185,7 @@ const Signup = () => {
                   : "text-red-500"
               }
             >
-              • Special character
+               | Special character
             </p>
           </div>
 
@@ -199,7 +199,7 @@ const Signup = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               placeholder="Confirm Password"
-              className="w-full p-3 pl-10 rounded-lg bg-gray-700 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold focus:border-gold"
+              className="w-full p-2 pl-10 rounded-lg bg-gray-700 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold focus:border-gold"
             />
             {formik.touched.confirmPassword && formik.errors.confirmPassword && (
               <div className="text-red-500 text-sm mt-1">{formik.errors.confirmPassword}</div>
@@ -234,7 +234,7 @@ const Signup = () => {
         </form>
 
         {/* Footer */}
-        <div className="mt-8 pt-6 border-t border-gold/20 text-center">
+        <div className="mt-4 pt-6 border-t border-gold/20 text-center">
           <p className="text-gray-400">
             Already have an account?{" "}
             <Link href="/Login" className="gold-text font-semibold hover:underline">
@@ -243,7 +243,7 @@ const Signup = () => {
           </p>
         </div>
 
-        <div className="mt-6 text-center text-gray-400 text-sm">
+        <div className="mt-4 text-center text-gray-400 text-sm">
           <FaShieldAlt className="inline text-gold mr-1" /> Your personal information is protected with enterprise-grade security
         </div>
       </div>

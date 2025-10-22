@@ -2,6 +2,7 @@
 import React from 'react'
 
 import { motion } from "framer-motion";
+import Link from 'next/link';
 const Hero = () => {
   return (
     <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-16">
@@ -26,15 +27,19 @@ const Hero = () => {
             className="text-xl md:text-2xl mb-10 max-w-2xl mx-auto text-gray-300 ">
                 Where elegance meets excellence. The premier destination for unforgettable events.
             </motion.p>
-            <motion.a href="booking.html"
-            
-            initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, delay: 0.6 }}
-        whileHover={{ scale: 1.1 }}
-            className="gold-button px-8 py-4 rounded-full text-lg font-medium inline-block " >
-                Book Your Event <i className="fas fa-arrow-right ml-2"></i>
-            </motion.a>
+            <motion.div
+  initial={{ opacity: 0, scale: 0.8 }}
+  animate={{ opacity: 1, scale: 1 }}
+  transition={{ duration: 0.8, delay: 0.6 }}
+  whileHover={{ scale: 1.1 }}
+>
+  <Link
+    href="/booking"
+    className="gold-button px-8 py-4 rounded-full text-lg font-medium inline-block"
+  >
+    Book Your Event <i className="fas fa-arrow-right ml-2"></i>
+  </Link>
+</motion.div>
         </div>
         
         {/* <!-- Scroll indicator --> */}
