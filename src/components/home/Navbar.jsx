@@ -11,11 +11,12 @@ const Navbar = () => {
           <Link href="/about" className="hover:text-yellow-400 transition-colors">About</Link>
           <Link href="/gallery" className="hover:text-yellow-400 transition-colors">Gallery</Link>
           <Link href="/reviews" className="hover:text-yellow-400 transition-colors">Testimonials</Link>
-          <Link href="/Register" className="hover:text-yellow-400 transition-colors">Register</Link>
+          <Link href="/booking" className="hover:text-yellow-400 transition-colors">Booking</Link>
           <Link href="/adminlogin" className="hover:text-yellow-400 transition-colors">Admin</Link>
           <Link href="/contact" className="hover:text-yellow-400 transition-colors">Contact</Link>
         </div>
-        <Link href="/booking" className="gold-button px-6 py-2 rounded-full font-medium">Book Now</Link>
+        <Link href="/Login" className="gold-button px-6 py-2 rounded-full font-medium">Log In</Link>
+        {/* <Link href="/Register" className="gold-button px-6 py-2 rounded-full font-medium">Sign up</Link> */}
       </div>
     </nav>
   )

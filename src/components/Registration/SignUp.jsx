@@ -84,10 +84,10 @@ const Signup = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-black px-4 pt-24">
       <div className="w-full max-w-md bg-gradient-to-br from-[#1A1A1A] to-[#0A0A0A] border gold-border shadow-2xl rounded-2xl p-8">
-        <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-gold mb-2">Create Account</h1>
-          <p className="text-gray-400">Join GrandVenue to plan your perfect event</p>
-        </div>
+      <div className="max-w-md mx-auto text-center mb-10 fade-in">
+                <h1 className="text-4xl font-cinzel font-bold mb-4 gold-gradient">Create Account</h1>
+                <p className="text-gray-400">Join GrandVenue Hall to book our luxurious venue for your special events</p>
+            </div>
 
         <form onSubmit={formik.handleSubmit} className="space-y-5">
           {/* Name */}
