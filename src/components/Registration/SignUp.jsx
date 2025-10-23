@@ -12,10 +12,12 @@ import {
   FaEyeSlash,
   FaUserPlus,
   FaShieldAlt,
+  FaArrowLeft, // Added back arrow icon
 } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
+import { useRouter } from "next/navigation"; // Added for navigation
 import { RegisterUser } from "@/services/userRegisterService/userRegisterService";
 
 // ✅ Yup Schema
@@ -38,6 +40,7 @@ const SignupSchema = Yup.object().shape({
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter(); // Initialize router
 
   const RegistrationPayload = (values) => ({
     name: values.name,
@@ -67,6 +70,14 @@ const Signup = () => {
     }
   };
 
+  // ✅ Back button handler
+  const handleBack = () => {
+    // router.back(); // Go back to previous page
+    
+    router.push('/'); // Go to home page
+    // router.push('/login'); // Go to login page
+  };
+
   // ✅ useFormik Hook
   const formik = useFormik({
     initialValues: {
@@ -82,12 +93,21 @@ const Signup = () => {
   });
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black px-2.5 pt-24">
+    <div className="min-h-screen flex items-center justify-center bg-black px-2.5 relative">
+      {/* Back Arrow Button */}
+      <button
+        onClick={handleBack}
+        className="absolute top-6 left-6 z-10 gold-button p-3 rounded-full cursor-pointer transition-all duration-300 hover:scale-110 hover:shadow-lg"
+        title="Go Back"
+      >
+        <FaArrowLeft className="text-black text-lg" />
+      </button>
+
       <div className="w-full max-w-md bg-gradient-to-br from-[#1A1A1A] to-[#0A0A0A] border gold-border shadow-2xl rounded-2xl p-8">
-      <div className="max-w-md mx-auto text-center mb-3 fade-in">
-                <h1 className="text-4xl font-cinzel font-bold mb-2 gold-gradient">Create Account</h1>
-                {/* <p className="text-gray-400">Join GrandVenue Hall to book our luxurious venue for your special events</p> */}
-            </div>
+        <div className="max-w-md mx-auto text-center mb-3 fade-in">
+          <h1 className="text-4xl font-cinzel font-bold mb-2 gold-gradient">Create Account</h1>
+          {/* <p className="text-gray-400">Join GrandVenue Hall to book our luxurious venue for your special events</p> */}
+        </div>
 
         <form onSubmit={formik.handleSubmit} className="space-y-5">
           {/* Name */}

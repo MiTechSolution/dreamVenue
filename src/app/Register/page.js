@@ -1,6 +1,7 @@
 
 import Footer from '@/components/home/Footer'
 import Navbar from '@/components/home/Navbar'
+
 import Signup from '@/components/Registration/SignUp'
 import React from 'react'
 
@@ -9,10 +10,9 @@ import React from 'react'
 
    return (
     <>
-    <Navbar/>
-     <Signup/>
-     {/* <Footer/> */}
-     </>
+    
+    <Signup/>
+  </>
    )
  }
  

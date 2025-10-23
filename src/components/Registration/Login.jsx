@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation"; // For redirect
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { FaSignInAlt, FaSpinner } from "react-icons/fa";
+import { FaSignInAlt, FaSpinner , FaArrowLeft , FaCrown } from "react-icons/fa";
 import { LoginUser } from "@/services/userLoginService/userLoginService";
 
 export default function Login() {
@@ -44,6 +44,13 @@ export default function Login() {
     setSubmitting(true);   
   };
 
+//  Back button handler
+const handleBack = () => {
+  // router.back(); // Go back to previous page
+  
+  router.push('/'); // Go to home page
+  // router.push('/login'); // Go to login page
+};
   // useFormik Hook
   const formik = useFormik({
     initialValues: {
@@ -57,14 +64,22 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex flex-col bg-black text-gray-200">
+       <button
+        onClick={handleBack}
+        className="absolute top-6 left-6 z-10 gold-button p-3 rounded-full cursor-pointer transition-all duration-300 hover:scale-110 hover:shadow-lg"
+        title="Go Back"
+      >
+        <FaArrowLeft className="text-black text-lg" />
+      </button>
+
       {/* Header */}
-      <header className="w-full py-6">
+      {/* <header className="w-full py-6">
         <div className="container mx-auto px-6 flex justify-center">
           <a href="/" className="text-3xl font-bold text-[#D4AF37]">
             GrandVenue
           </a>
         </div>
-      </header>
+      </header> */}
 
       {/* Main */}
       <main className="flex-grow flex items-center justify-center py-12">
@@ -73,7 +88,9 @@ export default function Login() {
             {/* Floating crown */}
             <div className="floating inline-block mb-4">
               <div className="w-16 h-16 rounded-full border-2 border-[#D4AF37] flex items-center justify-center mx-auto">
-                <i className="fas fa-crown text-2xl text-[#D4AF37]"></i>
+                {/* <i className="fas fa-crown text-2xl text-[#D4AF37]"></i> */}
+                <FaCrown className="text-2xl text-[#D4AF37]"/>
+
               </div>
             </div>
             <h1 className="text-3xl font-bold mb-2">Welcome Back</h1>
