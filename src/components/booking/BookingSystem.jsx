@@ -385,8 +385,8 @@ const BookingSystem = () => {
                       setFormError("Please fill all required fields before proceeding.");
                       return;
                     }
-                    setFormError(""); // agar sab filled hain to error hata do
-                    nextStep(); // next step pe jao
+                    setFormError(""); 
+                    nextStep(); 
                   }}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -535,7 +535,6 @@ const BookingSystem = () => {
             </motion.div>
           )}
 
-          {/* باقی code وہی رہے گا جو پہلے تھا */}
           {/* Step 3: Special Requests */}
           {step === 3 && (
             <motion.div
