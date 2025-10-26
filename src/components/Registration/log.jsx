@@ -15,7 +15,7 @@ import { useRouter } from 'next/navigation';
 import AnimatedIcons from '../AnimatedIcons';
 import BackButton from '../BackButton';
 
-export default function Login() {
+export default function Log() {
   // const [formData, setFormData] = useState({
   //   email: '',
   //   password: '',

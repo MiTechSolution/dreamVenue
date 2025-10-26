@@ -1,8 +1,9 @@
 
-import Footer from '@/components/home/Footer'
-import Navbar from '@/components/home/Navbar'
+import ProtectedRoute from '@/components/Auth/ProtectedRoute'
 
-import Signup from '@/components/Registration/SignUp'
+// import Signup from '@/components/Registration/SignUp'
+
+import Signup from '@/components/Registration/Signup'
 import React from 'react'
 
  
@@ -10,8 +11,12 @@ import React from 'react'
 
    return (
     <>
+     
     
-    <Signup/>
+
+   <Signup/>
+  
+ 
   </>
    )
  }

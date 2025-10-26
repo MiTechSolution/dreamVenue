@@ -36,7 +36,7 @@ import BackButton from '../BackButton';
  });
 
 
-export default function Signup() {
+export default function Sign() {
   // const [formData, setFormData] = useState({
   //   fullName: '',
   //   email: '',
