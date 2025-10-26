@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 const Vision = () => {
   return (
-    <section className="py-20  relative overflow-hidden">
+    <section  className="py-20  relative overflow-hidden">
       <div className="absolute inset-0 ">
     <Image
       src="/images/about.jpg"
@@ -24,7 +24,7 @@ const Vision = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {/* Vision */}
-          <motion.div
+          <motion.div id='vision'
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}

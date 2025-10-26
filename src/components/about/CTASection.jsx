@@ -64,14 +64,22 @@ const CTASection = () => {
               whileTap={{ scale: 0.95 }}
               className="gold-button px-8 py-4 rounded-full text-lg font-medium flex items-center gap-3"
             >
-               Book Your Event <FaArrowRight />
+              <Link
+          href="/booking"
+        //   className=" text-black px-8 py-4 rounded-full text-lg font-medium inline-block shadow-lg"
+        >
+          Book Your Event 
+        </Link> <FaArrowRight />
             </motion.button>
+            
+
+
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="border-2 border-yellow-500 text-yellow-400 px-8 py-4 rounded-full text-lg font-medium hover:bg-yellow-500/10 transition-all flex items-center gap-3"
             >
-              <FaPhone /> Contact Us
+                <Link href="/contact">  Contact Us</Link> <FaPhone /> 
             </motion.button>
           </div>
 

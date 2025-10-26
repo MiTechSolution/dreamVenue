@@ -116,44 +116,87 @@ export const services = [
 export const galleryData = [
   {
     id: 1,
-    title: "Grand Ballroom",
-    description: "A luxurious setting for grand wedding receptions.",
-    category: "wedding",
-    image: "/images/grand-ballroom.jpeg",
+    title: "Royal Wedding Celebration",
+    description: "A grand wedding ceremony with exquisite decorations and golden theme",
+    image: "/images/marriage.jpg",
+    category: "wedding"
   },
   {
     id: 2,
-    title: "Reception Area",
-    description: "Elegant and spacious reception area for welcoming guests.",
-    category: "wedding",
-    image: "/images/reception-area.jpeg",
+    title: "Elegant Engagement Ceremony",
+    description: "Intimate engagement ceremony with floral arrangements",
+    image: "/images/engagment.jpg",
+    category: "engagement"
   },
   {
     id: 3,
-    title: "Dining Setup",
-    description: "Beautifully arranged dining setup for formal events.",
-    category: "corporate",
+    title: "Corporate Gala Night",
+    description: "Professional corporate event with sophisticated setup",
     image: "/images/dining-setup.jpeg",
+    category: "corporate"
   },
   {
     id: 4,
-    title: "Stage Lighting",
-    description: "Professional lighting setup for memorable moments.",
-    category: "corporate",
-    image: "/images/stage-lighting.jpeg",
+    title: "Luxury Birthday Bash",
+    description: "Grand birthday celebration with theme decorations",
+    image: "/images/birthday.jpg",
+    category: "birthday"
   },
   {
     id: 5,
-    title: "Outdoor Ceremony",
-    description: "Romantic outdoor wedding setup surrounded by nature.",
-    category: "wedding",
-    image: "/images/outdoor-ceremony.jpg",
+    title: "Traditional Wedding Reception",
+    description: "Cultural wedding reception with traditional elements",
+    image: "/images/marriage2.jpg",
+    category: "wedding"
   },
   {
     id: 6,
-    title: "VIP Lounge",
-    description: "Exclusive VIP area for premium guests.",
-    category: "other",
-    image: "/images/vip-lounge.jpg",
+    title: "Modern Engagement Party",
+    description: "Contemporary engagement party with minimalist decor",
+    image: "/images/stage-lighting.jpeg",
+    category: "engagement"
   },
+  {
+    id: 7,
+    title: "Business Conference",
+    description: "Professional business conference setup",
+    image: "/images/outdoor-ceremony.jpg",
+    category: "corporate"
+  },
+  {
+    id: 8,
+    title: "Anniversary Celebration",
+    description: "Golden anniversary celebration with vintage theme",
+    image: "/images/vip-lounge.jpg",
+    category: "other"
+  },
+  {
+    id: 9,
+    title: "Bridal Shower",
+    description: "Elegant bridal shower with pastel decorations",
+    image: "/images/grand-ballroom.jpeg",
+    category: "other"
+  },
+  {
+    id: 10,
+    title: "Destination Wedding",
+    description: "Luxury destination wedding setup",
+    image: "/images/marriage3.jpg",
+    category: "wedding"
+  },
+  {
+    id: 11,
+    title: "Ring Ceremony",
+    description: "Traditional ring ceremony with cultural elements",
+    image: "/images/reception-area.jpeg",
+    category: "engagement"
+  },
+  {
+    id: 12,
+    title: "Product Launch",
+    description: "Corporate product launch event",
+    image: "/images/grand-ballroom.jpeg",
+    category: "corporate"
+  },
+  // Add more images as needed
 ];

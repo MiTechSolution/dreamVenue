@@ -2,104 +2,324 @@
 import { useState } from "react";
 import Image from "next/image";
 import { galleryData } from "@/Assets/data";
-import { FaTimes } from "react-icons/fa";
+import { FaTimes, FaArrowRight, FaArrowLeft, FaExpand } from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
 
-export default function Images() {
+export default function Gallery() {
   const [filter, setFilter] = useState("all");
   const [selected, setSelected] = useState(null);
+  const [visibleCount, setVisibleCount] = useState(6);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const filteredData =
     filter === "all"
       ? galleryData
       : galleryData.filter((item) => item.category === filter);
 
+  const visibleData = filteredData.slice(0, visibleCount);
+  const hasMore = visibleCount < filteredData.length;
+
+  const loadMore = () => {
+    setVisibleCount(prev => prev + 6);
+  };
+
+  const showAll = () => {
+    setVisibleCount(filteredData.length);
+  };
+
+  const nextImage = () => {
+    setCurrentIndex((prev) => 
+      prev === filteredData.length - 1 ? 0 : prev + 1
+    );
+    setSelected(filteredData[currentIndex === filteredData.length - 1 ? 0 : currentIndex + 1]);
+  };
+
+  const prevImage = () => {
+    setCurrentIndex((prev) => 
+      prev === 0 ? filteredData.length - 1 : prev - 1
+    );
+    setSelected(filteredData[currentIndex === 0 ? filteredData.length - 1 : currentIndex - 1]);
+  };
+
+  const openLightbox = (item, index) => {
+    setSelected(item);
+    setCurrentIndex(index);
+  };
+
+  const categories = [
+    { key: "all", label: "All Events", count: galleryData.length },
+    { key: "wedding", label: "Weddings", count: galleryData.filter(item => item.category === "wedding").length },
+    { key: "engagement", label: "Engagements", count: galleryData.filter(item => item.category === "engagement").length },
+    { key: "reception", label: "Receptions", count: galleryData.filter(item => item.category === "reception").length },
+    { key: "corporate", label: "Corporate", count: galleryData.filter(item => item.category === "corporate").length },
+    { key: "birthday", label: "Birthdays", count: galleryData.filter(item => item.category === "birthday").length }
+  ];
+
   return (
-    <section className="py-20 bg-black text-white">
-      <div className="container mx-auto px-4 text-center">
-        <h2 className="text-5xl font-cinzel font-bold mb-8 gold-gradient">
-          Our Gallery
-        </h2>
-        <p className="text-gray-300 max-w-3xl mx-auto mb-12">
-          Explore the elegance and sophistication of GrandVenue Hall through our
-          stunning event portfolio
-        </p>
-
-        {/* Filter Buttons */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {["all", "wedding", "corporate", "birthday", "other"].map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setFilter(cat)}
-              className={`px-6 py-2 rounded-full font-medium transition-all ${
-                filter === cat
-                  ? "bg-gradient-to-r from-yellow-400 to-yellow-300 text-black"
-                  : "bg-gray-800 text-white border border-gray-700 hover:bg-gray-700"
-              }`}
-            >
-              {cat === "all"
-                ? "All Events"
-                : cat.charAt(0).toUpperCase() + cat.slice(1)}
-            </button>
-          ))}
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+      {/* Hero Section */}
+      <section className="relative py-32 text-center overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="/images/about.jpg"
+            alt="Grand Venue Gallery"
+            fill
+            className="object-cover scale-110"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/60 to-black/90"></div>
         </div>
+        
+        <div className="relative z-10 container mx-auto px-4">
+          <motion.h1 
+            className="text-5xl md:text-7xl font-cinzel font-bold mb-6"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <span className="gold-gradient">Our Gallery</span>
+          </motion.h1>
+          <motion.p 
+            className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            Step into a world of elegance and celebration. Explore our stunning portfolio 
+            of unforgettable moments created at GrandVenue Hall.
+          </motion.p>
+        </div>
+      </section>
 
-        {/* Gallery Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredData.map((item) => (
-            <div
-              key={item.id}
-              onClick={() => setSelected(item)}
-              className="rounded-lg overflow-hidden border border-yellow-400 cursor-pointer transform hover:scale-105 transition-all relative group"
+      {/* Gallery Content */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          {/* Filter Buttons */}
+          <motion.div 
+            className="flex flex-wrap justify-center gap-4 mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            {categories.map((category) => (
+              <button
+                key={category.key}
+                onClick={() => {
+                  setFilter(category.key);
+                  setVisibleCount(6);
+                }}
+                className={`px-6 py-3 rounded-full font-medium transition-all duration-300 flex items-center gap-2 ${
+                  filter === category.key
+                    ? "gold-button shadow-lg shadow-yellow-500/30"
+                    : "bg-gray-800 text-white border border-yellow-500/30 hover:bg-gray-700 hover:border-yellow-400"
+                }`}
+              >
+                <span>{category.label}</span>
+                <span className={`text-sm px-2 py-1 rounded-full ${
+                  filter === category.key ? "bg-black/20 text-black" : "bg-yellow-500/20 text-yellow-400"
+                }`}>
+                  {category.count}
+                </span>
+              </button>
+            ))}
+          </motion.div>
+
+          {/* Gallery Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            <AnimatePresence>
+              {visibleData.map((item, index) => (
+                <motion.div
+                  key={item.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.5 }}
+                  className="group relative overflow-hidden rounded-2xl border border-yellow-500/30 bg-gray-900/50 backdrop-blur-sm cursor-pointer"
+                  onClick={() => openLightbox(item, filteredData.findIndex(img => img.id === item.id))}
+                >
+                  {/* Image Container */}
+                  <div className="relative h-80 overflow-hidden">
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    
+                    {/* Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-6">
+                      <div className="transform translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
+                        <h3 className="text-2xl font-cinzel font-bold text-yellow-400 mb-2">
+                          {item.title}
+                        </h3>
+                        <p className="text-gray-300 text-sm mb-3 line-clamp-2">
+                          {item.description}
+                        </p>
+                        <div className="flex items-center justify-between">
+                          <span className="text-yellow-400 text-sm font-medium capitalize">
+                            {item.category}
+                          </span>
+                          <div className="text-yellow-400">
+                            <FaExpand />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Category Badge */}
+                    <div className="absolute top-4 left-4">
+                      <span className="bg-yellow-500/90 text-black px-3 py-1 rounded-full text-sm font-medium capitalize">
+                        {item.category}
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+
+          {/* Load More Buttons */}
+          {filteredData.length > 0 && (
+            <motion.div 
+              className="text-center"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
             >
-              <Image
-                src={item.image}
-                alt={item.title}
-                width={400}
-                height={300}
-                className="object-cover w-full h-80"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-all flex flex-col justify-center items-center">
-                <h3 className="text-2xl font-cinzel font-bold text-yellow-400 mb-2">
-                  {item.title}
-                </h3>
-                <p className="text-gray-300 text-center px-4">
-                  {item.description}
+              {hasMore ? (
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                  <button
+                    onClick={loadMore}
+                    className="gold-button px-8 py-4 rounded-full font-medium flex items-center gap-3 hover:scale-105 transition-transform"
+                  >
+                    Load More <FaArrowRight />
+                  </button>
+                  
+                  {filteredData.length > 12 && (
+                    <button
+                      onClick={showAll}
+                      className="border-2 border-yellow-500 text-yellow-400 px-8 py-4 rounded-full font-medium hover:bg-yellow-500/10 transition-all flex items-center gap-3"
+                    >
+                      Show All ({filteredData.length} Photos)
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <div className="text-yellow-400 text-lg font-cinzel mb-2">
+                    🎉 All Photos Loaded
+                  </div>
+                  <p className="text-gray-400">
+                    You've viewed all {filteredData.length} photos in this category
+                  </p>
+                </div>
+              )}
+            </motion.div>
+          )}
+
+          {/* Empty State */}
+          {filteredData.length === 0 && (
+            <motion.div 
+              className="text-center py-16"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              <div className="text-6xl mb-4">📷</div>
+              <h3 className="text-2xl font-cinzel font-bold text-yellow-400 mb-4">
+                No Photos Found
+              </h3>
+              <p className="text-gray-400 max-w-md mx-auto">
+                We're constantly updating our gallery. Check back soon for new photos in this category!
+              </p>
+            </motion.div>
+          )}
+        </div>
+      </section>
+
+      {/* Enhanced Lightbox */}
+      <AnimatePresence>
+        {selected && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            onClick={() => setSelected(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              className="max-w-6xl w-full max-h-[90vh] relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <button
+                className="absolute top-4 right-4 text-white text-3xl z-10 bg-black/50 rounded-full p-2 hover:bg-black/70 transition-all"
+                onClick={() => setSelected(null)}
+              >
+                <FaTimes />
+              </button>
+
+              {/* Navigation Arrows */}
+              <button
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-2xl bg-black/50 rounded-full p-4 hover:bg-black/70 transition-all z-10"
+                onClick={prevImage}
+              >
+                <FaArrowLeft />
+              </button>
+
+              <button
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-2xl bg-black/50 rounded-full p-4 hover:bg-black/70 transition-all z-10"
+                onClick={nextImage}
+              >
+                <FaArrowRight />
+              </button>
+
+              {/* Image */}
+              <div className="relative h-[70vh] rounded-2xl overflow-hidden">
+                <Image
+                  src={selected.image}
+                  alt={selected.title}
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </div>
+
+              {/* Image Info */}
+              <div className="bg-gray-900/80 backdrop-blur-sm rounded-2xl p-6 mt-4 border border-yellow-500/30">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h3 className="text-3xl font-cinzel font-bold text-yellow-400 mb-2">
+                      {selected.title}
+                    </h3>
+                    <p className="text-gray-300 text-lg mb-3">
+                      {selected.description}
+                    </p>
+                    <div className="flex items-center gap-4">
+                      <span className="bg-yellow-500 text-black px-3 py-1 rounded-full text-sm font-medium capitalize">
+                        {selected.category}
+                      </span>
+                      <span className="text-gray-400 text-sm">
+                        {currentIndex + 1} of {filteredData.length}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Keyboard Shortcuts Hint */}
+              <div className="text-center mt-4">
+                <p className="text-gray-500 text-sm">
+                  Use ← → arrow keys to navigate • Esc to close
                 </p>
               </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Lightbox */}
-      {selected && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50"
-          onClick={() => setSelected(null)}
-        >
-          <div className="max-w-4xl relative p-4">
-            <button
-              className="absolute top-4 right-4 text-white text-3xl"
-              onClick={() => setSelected(null)}
-            >
-              <FaTimes />
-            </button>
-            <Image
-              src={selected.image}
-              alt={selected.title}
-              width={900}
-              height={600}
-              className="rounded-lg object-contain mx-auto"
-            />
-            <h3 className="text-3xl font-cinzel font-bold text-yellow-400 mt-6 text-center">
-              {selected.title}
-            </h3>
-            <p className="text-gray-300 text-center mt-2">
-              {selected.description}
-            </p>
-          </div>
-        </div>
-      )}
-    </section>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }

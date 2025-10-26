@@ -2,6 +2,8 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
+
 import { FaCrown, FaUsers, FaStar, FaAward, FaHeart, FaShield, FaCalendarCheck, FaGlassCheers } from 'react-icons/fa';
 
 
@@ -71,10 +73,11 @@ const HeroSection = () => {
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
             <div className="gold-button px-8 py-4 rounded-full text-lg font-medium cursor-pointer hover:scale-105 transition-transform">
-              Explore Our Story
+               
+           <a href="#vision">Explore us</a>
             </div>
             <div className="border-2 border-yellow-500 text-yellow-400 px-8 py-4 rounded-full text-lg font-medium cursor-pointer hover:bg-yellow-500/10 transition-all">
-              View Gallery
+             <Link href="/gallery">View Gallery</Link> 
             </div>
           </motion.div>
         </motion.div>
@@ -91,6 +94,7 @@ const HeroSection = () => {
         </motion.div>
       </div>
     </section>
+
   );
 };
 
