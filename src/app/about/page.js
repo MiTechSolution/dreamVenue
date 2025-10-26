@@ -1,24 +1,45 @@
-import Navbar from "@/components/home/Navbar";
+'use client';
 
-import HeroSection from "@/components/about/HeroSection";
-import History from "@/components/about/History";
-import Footer from "@/components/home/Footer";
-import Facilities from "@/components/about/Facilities";
-import Services from "@/components/about/Services";
+import CTASection from '@/components/about/CTASection';
+import HeroSection from '@/components/about/HeroSection';
+import StatisticsSection from '@/components/about/StatisticsSection';
+import StorySection from '@/components/about/StorySection';
+import TeamSection from '@/components/about/TeamSection';
+import TestimonialsSection from '@/components/about/TestimonialsSection';
+import ValuesSection from '@/components/about/ValuesSection';
+import Vision from '@/components/about/Vision';
+import Footer from '@/components/home/Footer';
+import Navbar from '@/components/home/Navbar';
+import { motion } from 'framer-motion';
 
-
-
-
-export default function about() {
+const page = () => {
   return (
-    <main>
-      <Navbar/>
-      <HeroSection/>
-      <History/>
-      <Facilities/>
-      <Services/>
-      <Footer/>
+    <div className="min-h-screen bg-black">
+     
+     <Navbar/>
+                                              <HeroSection/>         
+
+      {/* <StorySection/> */}
+
+
+      <StatisticsSection/>
+
+                                                  <Vision/>
+      <ValuesSection/>
+                           
       
-    </main>
+                                                  <CTASection/>
+       <TeamSection/>
+     
+                                          <TestimonialsSection/>
+      
+       
+     <Footer/>
+      
+      
+     
+    </div>
   );
-}
+};
+
+export default page;
