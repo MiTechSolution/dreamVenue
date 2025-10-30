@@ -44,17 +44,28 @@ const Navbar = () => {
           <Link href="/gallery" className="hover:text-yellow-400 transition-colors">
             Gallery
           </Link>
+          <Link href="/catering" className="hover:text-yellow-400 transition-colors">
+            Catering
+          </Link>
 
           {isLoggedIn && (
             <Link href="/booking" className="hover:text-yellow-400 transition-colors">
               Booking
             </Link>
           )}
-          {isLoggedIn && (
+
+          {/* {isLoggedIn && (
             <Link href="/adminlogin" className="hover:text-yellow-400 transition-colors">
               Admin
             </Link>
-          )}
+          )} */}
+
+<Link href="/admin/login" className="hover:text-yellow-400 transition-colors">
+              Admin
+            </Link>
+
+
+
 
           <Link href="/contact" className="hover:text-yellow-400 transition-colors">
             Contact
@@ -135,6 +146,7 @@ const Navbar = () => {
                 Booking
               </Link>
             )}
+
             {isLoggedIn && (
               <Link
                 href="/adminlogin"
@@ -144,6 +156,14 @@ const Navbar = () => {
                 Admin
               </Link>
             )}
+              {/* <Link
+                href="/admin/login"
+                onClick={() => setIsMenuOpen(false)}
+                className="hover:text-yellow-400"
+              >
+                Admin
+              </Link> */}
+
             <Link
               href="/contact"
               onClick={() => setIsMenuOpen(false)}

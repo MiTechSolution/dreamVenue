@@ -2,21 +2,22 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 export const LoginUser = async (userData) => {
-    debugger
   try {
-    const response = await axios.post('/api/auth/login', userData);
+    const response = await axios.post("/api/auth/login", userData);
+
+    // ✅ Success toast
+    toast.success(response.data.message || "Login successful!");
+
+    // Return token or user data
     return response.data;
   } catch (error) {
+    // ✅ Error message frontend pe show
     const errorMessage =
-      error.response?.data?.error || // e.g. "User already exists"
+      error.response?.data?.error ||
       error.response?.data?.message ||
-      'Login failed';
+      "Login failed. Please try again.";
 
-    // Toast me readable message dikhana
     toast.error(errorMessage);
-
-    // Error throw karo taake upper layer (e.g. component) handle kar sake
     throw new Error(errorMessage);
-  } 
-
+  }
 };

@@ -1,15 +1,79 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { galleryData } from "@/Assets/data";
 import { FaTimes, FaArrowRight, FaArrowLeft, FaExpand } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+
+// Default gallery data if no data in localStorage
+const defaultGalleryData = [
+  {
+    id: 1,
+    title: "Royal Wedding Celebration",
+    description: "A grand wedding ceremony with exquisite decorations and golden theme",
+    image: "/images/gallery/wedding-1.jpg",
+    category: "wedding"
+  },
+  {
+    id: 2,
+    title: "Elegant Engagement Ceremony",
+    description: "Intimate engagement ceremony with floral arrangements",
+    image: "/images/gallery/engagement-1.jpg",
+    category: "engagement"
+  },
+  {
+    id: 3,
+    title: "Corporate Gala Night",
+    description: "Professional corporate event with sophisticated setup",
+    image: "/images/gallery/corporate-1.jpg",
+    category: "corporate"
+  },
+  {
+    id: 4,
+    title: "Luxury Birthday Bash",
+    description: "Grand birthday celebration with theme decorations",
+    image: "/images/gallery/birthday-1.jpg",
+    category: "birthday"
+  },
+  {
+    id: 5,
+    title: "Traditional Wedding Reception",
+    description: "Cultural wedding reception with traditional elements",
+    image: "/images/gallery/wedding-2.jpg",
+    category: "wedding"
+  },
+  {
+    id: 6,
+    title: "Modern Engagement Party",
+    description: "Contemporary engagement party with minimalist decor",
+    image: "/images/gallery/engagement-2.jpg",
+    category: "engagement"
+  }
+];
 
 export default function Gallery() {
   const [filter, setFilter] = useState("all");
   const [selected, setSelected] = useState(null);
   const [visibleCount, setVisibleCount] = useState(6);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [galleryData, setGalleryData] = useState(defaultGalleryData);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadGalleryData = async () => {
+      try {
+        const response = await fetch("/api/gallery/get");
+        const data = await response.json();
+        setGalleryData(Array.isArray(data) && data.length > 0 ? data : defaultGalleryData);
+      } catch (error) {
+        console.error("Error fetching gallery:", error);
+        setGalleryData(defaultGalleryData);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
+    loadGalleryData();
+  }, []);
 
   const filteredData =
     filter === "all"
@@ -28,6 +92,8 @@ export default function Gallery() {
   };
 
   const nextImage = () => {
+    if (filteredData.length === 0) return;
+    
     setCurrentIndex((prev) => 
       prev === filteredData.length - 1 ? 0 : prev + 1
     );
@@ -35,6 +101,8 @@ export default function Gallery() {
   };
 
   const prevImage = () => {
+    if (filteredData.length === 0) return;
+    
     setCurrentIndex((prev) => 
       prev === 0 ? filteredData.length - 1 : prev - 1
     );
@@ -46,6 +114,20 @@ export default function Gallery() {
     setCurrentIndex(index);
   };
 
+  // Handle keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!selected) return;
+      
+      if (e.key === 'ArrowRight') nextImage();
+      if (e.key === 'ArrowLeft') prevImage();
+      if (e.key === 'Escape') setSelected(null);
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selected, currentIndex, filteredData]);
+
   const categories = [
     { key: "all", label: "All Events", count: galleryData.length },
     { key: "wedding", label: "Weddings", count: galleryData.filter(item => item.category === "wedding").length },
@@ -54,6 +136,17 @@ export default function Gallery() {
     { key: "corporate", label: "Corporate", count: galleryData.filter(item => item.category === "corporate").length },
     { key: "birthday", label: "Birthdays", count: galleryData.filter(item => item.category === "birthday").length }
   ];
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-yellow-400 text-lg">Loading Gallery...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
@@ -140,11 +233,15 @@ export default function Gallery() {
                 >
                   {/* Image Container */}
                   <div className="relative h-80 overflow-hidden">
-                    <Image
+                    {/* Use img tag instead of Next Image for dynamic images */}
+                    <img
                       src={item.image}
                       alt={item.title}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      onError={(e) => {
+                        // Fallback if image fails to load
+                        e.target.src = '/images/placeholder.jpg';
+                      }}
                     />
                     
                     {/* Overlay */}
@@ -232,6 +329,11 @@ export default function Gallery() {
               <p className="text-gray-400 max-w-md mx-auto">
                 We're constantly updating our gallery. Check back soon for new photos in this category!
               </p>
+              <div className="mt-6">
+                <p className="text-gray-500 text-sm">
+                  Admin? <a href="/admin/login" className="text-yellow-400 hover:text-yellow-300 underline">Upload images here</a>
+                </p>
+              </div>
             </motion.div>
           )}
         </div>
@@ -263,28 +365,33 @@ export default function Gallery() {
               </button>
 
               {/* Navigation Arrows */}
-              <button
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-2xl bg-black/50 rounded-full p-4 hover:bg-black/70 transition-all z-10"
-                onClick={prevImage}
-              >
-                <FaArrowLeft />
-              </button>
+              {filteredData.length > 1 && (
+                <>
+                  <button
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-2xl bg-black/50 rounded-full p-4 hover:bg-black/70 transition-all z-10"
+                    onClick={prevImage}
+                  >
+                    <FaArrowLeft />
+                  </button>
 
-              <button
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-2xl bg-black/50 rounded-full p-4 hover:bg-black/70 transition-all z-10"
-                onClick={nextImage}
-              >
-                <FaArrowRight />
-              </button>
+                  <button
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-2xl bg-black/50 rounded-full p-4 hover:bg-black/70 transition-all z-10"
+                    onClick={nextImage}
+                  >
+                    <FaArrowRight />
+                  </button>
+                </>
+              )}
 
               {/* Image */}
               <div className="relative h-[70vh] rounded-2xl overflow-hidden">
-                <Image
+                <img
                   src={selected.image}
                   alt={selected.title}
-                  fill
-                  className="object-contain"
-                  priority
+                  className="w-full h-full object-contain"
+                  onError={(e) => {
+                    e.target.src = '/images/placeholder.jpg';
+                  }}
                 />
               </div>
 

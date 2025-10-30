@@ -360,6 +360,7 @@ export default function Login() {
           </motion.div>
         </div>
       </motion.div>
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 }
