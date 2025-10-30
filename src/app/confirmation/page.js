@@ -165,12 +165,12 @@ const ConfirmationPage = () => {
                 >
                   <i className="fas fa-print mr-2"></i> Print Confirmation
                 </button>
-                <a
+                <Link
                   href="/"
                   className="bg-gray-800 text-white px-6 py-3 rounded-full font-medium border border-gray-700 hover:bg-gray-700 transition-colors text-center"
                 >
                   <i className="fas fa-home mr-2"></i> Back to Home
-                </a>
+                </Link>
               </div>
             </div>
           </div>
