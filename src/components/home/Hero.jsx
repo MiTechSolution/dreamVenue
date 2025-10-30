@@ -18,7 +18,7 @@ const Hero = () => {
       preload="none"
       poster="/images/main.jpg"
     >
-      <source src="/videos/wedding-hall.mp4" type="video/mp4" />
+      {/* <source src="/videos/wedding-hall.mp4" type="video/mp4" /> */}
     </video>
   
     <div className="absolute inset-0 bg-black/70 z-0"></div>
