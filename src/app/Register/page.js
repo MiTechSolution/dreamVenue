@@ -11,8 +11,7 @@ import React from 'react'
     <>
      
     
-
-
+{/* registration */}
 <Register/>
  
   </>
