@@ -4,6 +4,8 @@ import { useState } from 'react';
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import { motion } from 'framer-motion';
+import { toast } from "react-toastify";
+
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { FcGoogle } from 'react-icons/fc';
@@ -60,6 +62,7 @@ export default function Register() {
         router.push('/');  
     };
   
+
   // const handleChange = (e) => {
   //   setFormData({
   //     ...formData,
@@ -80,10 +83,13 @@ export default function Register() {
         const response = await RegisterUser(Payload);
           
         if(response) {
-          toast.success(response.message , {autoClose: 2000});
-
+          toast.success(response.message , {autoClose: 1500});
+          resetForm();
+          setTimeout(() => {
+            router.push('/Login');   
+          }, 1000);
         }
-        resetForm();
+      
        }
        catch (err) {
         if(err.inner) {
