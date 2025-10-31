@@ -4,7 +4,7 @@ import { useState } from 'react';
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import { motion } from 'framer-motion';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { FcGoogle } from 'react-icons/fc';
 import { FaCrown, FaHeart, FaRing, FaEyeSlash , FaEye, FaArrowLeft } from 'react-icons/fa';
@@ -14,6 +14,7 @@ import { RegisterUser } from '@/services/userRegisterService/userRegisterService
 import { useRouter } from 'next/navigation';
 import AnimatedIcons from '../AnimatedIcons';
 import BackButton from '../BackButton';
+
 
 // yup schema
 

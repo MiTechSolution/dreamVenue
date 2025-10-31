@@ -2,7 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 export const LoginUser = async (userData) => {
-    debugger
+    
   try {
     const response = await axios.post('/api/auth/login', userData);
     return response.data;

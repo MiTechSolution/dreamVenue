@@ -1,16 +1,16 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
-export const RegisterUser = async (userData) => {
+export const UserBooking = async (userData) => {
     
   try {
-    const response = await axios.post('/api/auth/register', userData);
+    const response = await axios.post('/api/auth/booking', userData);
     return response.data;
   } catch (error) {
     const errorMessage =
       error.response?.data?.error || // e.g. "User already exists"
       error.response?.data?.message ||
-      'Registration failed';
+      'Login failed';
 
     // Toast me readable message dikhana
     toast.error(errorMessage);

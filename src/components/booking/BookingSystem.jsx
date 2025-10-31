@@ -5,23 +5,26 @@ import { useFormik } from 'formik';
 import Image from 'next/image';
 import * as Yup from 'yup';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  FaCalendarAlt, 
-  FaUsers, 
-  FaMoneyBillWave, 
-  FaCheck, 
+import {
+  FaCalendarAlt,
+  FaUsers,
+  FaMoneyBillWave,
+  FaCheck,
   FaClock,
   FaFilePdf,
   FaArrowLeft,
   FaCrown
 } from 'react-icons/fa';
-import { 
-  FcConferenceCall, 
-  FcCalendar, 
-  FcMoneyTransfer, 
-  FcOk 
+import {
+  FcConferenceCall,
+  FcCalendar,
+  FcMoneyTransfer,
+  FcOk
 } from 'react-icons/fc';
 import BackButton from '../BackButton';
+import { UserBooking } from '@/services/userBookingService/bookingService';
+import { toast } from 'react-toastify';
+
 
 const BookingSystem = () => {
   const [step, setStep] = useState(1);
@@ -29,6 +32,9 @@ const BookingSystem = () => {
   const [selectedDates, setSelectedDates] = useState([]);
   const [bookingStatus, setBookingStatus] = useState('pending');
   const [currentDate, setCurrentDate] = useState(new Date());
+const userID= JSON.parse(localStorage.getItem("user!"));
+  const id = userID?.id;
+  console.log("UserID in booking system:", id);
 
   const currentMonth = currentDate.getMonth();
   const currentYear = currentDate.getFullYear();
@@ -53,6 +59,49 @@ const BookingSystem = () => {
     }
   }, []);
 
+  const Payload = (values, id) => {
+    debugger
+    return {
+      user_id: id,
+      eventType: values.eventType,
+      eventTime: values.eventTime,
+      eventDate: values.eventDate,
+      bookingType: values.bookingType,
+      guestCount: values.guestCount,
+      totalAmount: values.totalAmount,
+      specialRequest: values.specialRequest,
+      paymentMethod: values.paymentMethod,
+      easyPaisaNumber: values.easyPaisaNumber,
+      jazzCashNumber: values.jazzCashNumber,
+      accountNumber: values.accountNumber
+    }
+  }
+
+
+  const HandleSubmit = async (values) => {
+    debugger
+    // Final submission logic here 
+    try {
+      const BookinPayload = Payload(values, id)
+      const response = await UserBooking(BookinPayload);
+      if (response) {
+        toast.success("Booking successful!", { autoClose: 3000 });
+         setStep(5);
+      }
+
+    } catch (error) {
+      if (err.inner) {
+        err.inner.forEach((error) => {
+          toast.error(err.message, { autoClose: 3000 })
+        });
+      } else {
+        toast.error(err.message || "Registration failed", { autoClose: 3000 });
+      }
+    }
+
+  };
+
+
   const formik = useFormik({
     initialValues: {
       eventType: '',
@@ -72,8 +121,8 @@ const BookingSystem = () => {
       eventTime: Yup.string().required('Event time is required'),
       eventDate: Yup.string().required('Event date is required'),
       bookingType: Yup.string().required('Booking type is required'),
-        
-    guestCount: Yup.number().when('bookingType', (bookingType, schema) => {
+
+      guestCount: Yup.number().when('bookingType', (bookingType, schema) => {
         if (bookingType === 'per_head') {
           return schema
             .min(1, 'At least 1 guest required')
@@ -82,21 +131,17 @@ const BookingSystem = () => {
         }
         return schema; // complete_hall ke liye no validation
       }),
-      
+
 
       specialRequest: Yup.string().max(500, 'Maximum 500 characters allowed')
     }),
-    onSubmit: (values) => {
-      console.log('Booking submitted:', values);
-      setBookingStatus('pending');
-      setStep(5);
-    }
+    onSubmit: HandleSubmit
   });
 
   // Handle booking type change
   const handleBookingTypeChange = (type) => {
     formik.setFieldValue('bookingType', type);
-    
+
     // Calculate amount after a small delay
     setTimeout(() => {
       if (type === 'complete_hall') {
@@ -134,30 +179,30 @@ const BookingSystem = () => {
   };
 
   const isDateSelected = (date) => {
-    return selectedDates.some(selectedDate => 
+    return selectedDates.some(selectedDate =>
       selectedDate.toDateString() === date.toDateString()
     );
   };
 
   const handleDateSelect = (date) => {
-    if (date < new Date().setHours(0,0,0,0)) return;
-    
+    if (date < new Date().setHours(0, 0, 0, 0)) return;
+
     const dateStr = date.toISOString().split('T')[0];
     if (bookedDates.includes(dateStr)) return;
 
     const newSelectedDates = [...selectedDates];
     const dateIndex = newSelectedDates.findIndex(d => d.toDateString() === date.toDateString());
-    
+
     if (dateIndex > -1) {
       newSelectedDates.splice(dateIndex, 1);
     } else {
       newSelectedDates.push(date);
     }
-    
+
     setSelectedDates(newSelectedDates);
-    
+
     if (newSelectedDates.length > 0) {
-      const datesString = newSelectedDates.map(d => 
+      const datesString = newSelectedDates.map(d =>
         d.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })
       ).join(', ');
       formik.setFieldValue('eventDate', datesString);
@@ -177,7 +222,7 @@ const BookingSystem = () => {
     // Current month days
     for (let day = 1; day <= daysInMonth; day++) {
       const date = new Date(currentYear, currentMonth, day);
-      const isPast = date < new Date().setHours(0,0,0,0);
+      const isPast = date < new Date().setHours(0, 0, 0, 0);
       const isBooked = isDateBooked(date);
       const isSelected = isDateSelected(date);
 
@@ -186,15 +231,14 @@ const BookingSystem = () => {
           key={day}
           whileHover={{ scale: isPast || isBooked ? 1 : 1.1 }}
           whileTap={{ scale: isPast || isBooked ? 1 : 0.95 }}
-          className={`h-10 rounded-lg flex items-center justify-center text-sm font-medium transition-all ${
-            isPast 
-              ? 'text-gray-500 cursor-not-allowed' 
-              : isBooked 
-              ? 'bg-red-500 text-white cursor-not-allowed' 
-              : isSelected 
-              ? 'bg-yellow-500 text-black' 
-              : 'bg-gray-700 text-white hover:bg-gray-600'
-          }`}
+          className={`h-10 rounded-lg flex items-center justify-center text-sm font-medium transition-all ${isPast
+            ? 'text-gray-500 cursor-not-allowed'
+            : isBooked
+              ? 'bg-red-500 text-white cursor-not-allowed'
+              : isSelected
+                ? 'bg-yellow-500 text-black'
+                : 'bg-gray-700 text-white hover:bg-gray-600'
+            }`}
           onClick={() => !isPast && !isBooked && handleDateSelect(date)}
           disabled={isPast || isBooked}
         >
@@ -222,19 +266,20 @@ const BookingSystem = () => {
     { number: 5, title: 'Confirmation', icon: <FaCheck /> }
   ];
   const [formError, setFormError] = useState('');
+    
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-700 to-black py-8 px-4">
-<Image
-                src="/images/main.jpg"
-                alt="GrandVenue Hall"
-                fill
-                className="object-cover mix-blend-overlay"
-                priority
-              />
-        <BackButton/>
+      <Image
+        src="/images/main.jpg"
+        alt="GrandVenue Hall"
+        fill
+        className="object-cover mix-blend-overlay"
+        priority
+      />
+      <BackButton />
       {/* Header Notification */}
-      <motion.div 
+      <motion.div
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         className="max-w-4xl mx-auto mb-8"
@@ -259,17 +304,15 @@ const BookingSystem = () => {
           <div className="flex items-center justify-between mb-4">
             {steps.map((stepItem, index) => (
               <div key={stepItem.number} className="flex items-center">
-                <div className={`flex items-center justify-center w-10 h-10 rounded-full border-2 ${
-                  step >= stepItem.number 
-                    ? 'bg-yellow-500 border-yellow-500 text-black' 
-                    : 'border-yellow-500/30 text-yellow-500/30'
-                } transition-all duration-300`}>
+                <div className={`flex items-center justify-center w-10 h-10 rounded-full border-2 ${step >= stepItem.number
+                  ? 'bg-yellow-500 border-yellow-500 text-black'
+                  : 'border-yellow-500/30 text-yellow-500/30'
+                  } transition-all duration-300`}>
                   {stepItem.icon}
                 </div>
                 {index < steps.length - 1 && (
-                  <div className={`w-16 h-1 mx-2 ${
-                    step > stepItem.number ? 'bg-yellow-500' : 'bg-yellow-500/30'
-                  } transition-all duration-300`}></div>
+                  <div className={`w-16 h-1 mx-2 ${step > stepItem.number ? 'bg-yellow-500' : 'bg-yellow-500/30'
+                    } transition-all duration-300`}></div>
                 )}
               </div>
             ))}
@@ -291,7 +334,7 @@ const BookingSystem = () => {
               className="p-6 md:p-8"
             >
               <h2 className="text-xl font-cinzel font-bold text-yellow-400 mb-6">Event Details</h2>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Event Type */}
                 <div>
@@ -371,11 +414,11 @@ const BookingSystem = () => {
                   <div className="w-4 h-4 bg-yellow-500 rounded"></div>
                   <span className="text-gray-300">Selected</span>
                 </div>
-              
+
               </div>
               {formError && (
-    <p className="text-red-500 text-center text-sm mt-2">{formError}</p>
-  )}
+                <p className="text-red-500 text-center text-sm mt-2">{formError}</p>
+              )}
 
               <div className="flex justify-end mt-8">
                 <motion.button
@@ -385,17 +428,17 @@ const BookingSystem = () => {
                       setFormError("Please fill all required fields before proceeding.");
                       return;
                     }
-                    setFormError(""); 
-                    nextStep(); 
+                    setFormError("");
+                    nextStep();
                   }}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   className="gold-button px-8 py-3 rounded-xl font-semibold"
-                 
+
                 //   disabled={!formik.values.eventType || !formik.values.eventTime || !formik.values.eventDate}
                 >
                   Next: Booking Type
-                  
+
                 </motion.button>
               </div>
             </motion.div>
@@ -420,17 +463,16 @@ const BookingSystem = () => {
                       type="button"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className={`p-6 rounded-2xl border-2 transition-all duration-300 ${
-                        formik.values.bookingType === 'per_head'
-                          ? 'border-yellow-500 bg-yellow-500/10'
-                          : 'border-yellow-500/30 bg-gray-800 hover:border-yellow-400'
-                      }`}
+                      className={`p-6 rounded-2xl border-2 transition-all duration-300 ${formik.values.bookingType === 'per_head'
+                        ? 'border-yellow-500 bg-yellow-500/10'
+                        : 'border-yellow-500/30 bg-gray-800 hover:border-yellow-400'
+                        }`}
                       onClick={() => handleBookingTypeChange('per_head')}
                     >
                       <div className="text-center">
                         <FcConferenceCall className="text-4xl mx-auto mb-3" />
                         <h3 className="text-lg font-semibold text-white mb-2">Per Head</h3>
-                        <p className="text-gray-300 text-sm">₹2,500 per person</p>
+                        <p className="text-gray-300 text-sm">PKR2,500 per person</p>
                         <p className="text-yellow-400 text-sm mt-2">Flexible pricing</p>
                       </div>
                     </motion.button>
@@ -439,17 +481,16 @@ const BookingSystem = () => {
                       type="button"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className={`p-6 rounded-2xl border-2 transition-all duration-300 ${
-                        formik.values.bookingType === 'complete_hall'
-                          ? 'border-yellow-500 bg-yellow-500/10'
-                          : 'border-yellow-500/30 bg-gray-800 hover:border-yellow-400'
-                      }`}
+                      className={`p-6 rounded-2xl border-2 transition-all duration-300 ${formik.values.bookingType === 'complete_hall'
+                        ? 'border-yellow-500 bg-yellow-500/10'
+                        : 'border-yellow-500/30 bg-gray-800 hover:border-yellow-400'
+                        }`}
                       onClick={() => handleBookingTypeChange('complete_hall')}
                     >
                       <div className="text-center">
                         <FcCalendar className="text-4xl mx-auto mb-3" />
                         <h3 className="text-lg font-semibold text-white mb-2">Complete Hall</h3>
-                        <p className="text-gray-300 text-sm">₹500,000 fixed</p>
+                        <p className="text-gray-300 text-sm">PKR500,000 fixed</p>
                         <p className="text-yellow-400 text-sm mt-2">Up to 500 guests</p>
                       </div>
                     </motion.button>
@@ -498,11 +539,11 @@ const BookingSystem = () => {
                     <FcMoneyTransfer className="text-4xl mx-auto mb-3" />
                     <h3 className="text-lg font-semibold text-yellow-400 mb-2">Total Amount</h3>
                     <div className="text-3xl font-bold text-white">
-                      ₹{formik.values.totalAmount.toLocaleString()}
+                      PKR{formik.values.totalAmount.toLocaleString()}
                     </div>
                     <p className="text-gray-300 text-sm mt-2">
-                      {formik.values.bookingType === 'per_head' 
-                        ? `₹2,500 × ${formik.values.guestCount || 0} guests`
+                      {formik.values.bookingType === 'per_head'
+                        ? `PKR2,500 × ${formik.values.guestCount || 0} guests`
                         : 'Complete hall booking (up to 500 guests)'
                       }
                     </p>
@@ -608,11 +649,10 @@ const BookingSystem = () => {
                       type="button"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className={`p-4 rounded-xl border-2 transition-all duration-300 ${
-                        formik.values.paymentMethod === 'physical'
-                          ? 'border-yellow-500 bg-yellow-500/10'
-                          : 'border-yellow-500/30 bg-gray-800 hover:border-yellow-400'
-                      }`}
+                      className={`p-4 rounded-xl border-2 transition-all duration-300 ${formik.values.paymentMethod === 'physical'
+                        ? 'border-yellow-500 bg-yellow-500/10'
+                        : 'border-yellow-500/30 bg-gray-800 hover:border-yellow-400'
+                        }`}
                       onClick={() => formik.setFieldValue('paymentMethod', 'physical')}
                     >
                       <div className="text-center">
@@ -626,11 +666,10 @@ const BookingSystem = () => {
                       type="button"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className={`p-4 rounded-xl border-2 transition-all duration-300 ${
-                        formik.values.paymentMethod === 'online'
-                          ? 'border-yellow-500 bg-yellow-500/10'
-                          : 'border-yellow-500/30 bg-gray-800 hover:border-yellow-400'
-                      }`}
+                      className={`p-4 rounded-xl border-2 transition-all duration-300 ${formik.values.paymentMethod === 'online'
+                        ? 'border-yellow-500 bg-yellow-500/10'
+                        : 'border-yellow-500/30 bg-gray-800 hover:border-yellow-400'
+                        }`}
                       onClick={() => formik.setFieldValue('paymentMethod', 'online')}
                     >
                       <div className="text-center">
@@ -691,17 +730,16 @@ const BookingSystem = () => {
                       <div>
                         <h4 className="font-semibold text-yellow-400">Payment Status</h4>
                         <p className="text-gray-300 text-sm">
-                          {formik.values.paymentMethod === 'physical' 
+                          {formik.values.paymentMethod === 'physical'
                             ? 'Payment will be collected at the venue. Booking confirmation subject to payment verification.'
                             : 'Online payment will be verified within 24 hours.'
                           }
                         </p>
                       </div>
-                      <div className={`px-3 py-1 rounded-full text-sm font-medium ${
-                        bookingStatus === 'pending' 
-                          ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                          : 'bg-green-500/20 text-green-400 border border-green-500/30'
-                      }`}>
+                      <div className={`px-3 py-1 rounded-full text-sm font-medium ${bookingStatus === 'pending'
+                        ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                        : 'bg-green-500/20 text-green-400 border border-green-500/30'
+                        }`}>
                         {bookingStatus === 'pending' ? 'Pending' : 'Confirmed'}
                       </div>
                     </div>
@@ -748,11 +786,11 @@ const BookingSystem = () => {
               >
                 <FcOk />
               </motion.div>
-              
+
               <h2 className="text-2xl md:text-3xl font-cinzel font-bold gold-gradient mb-4">
                 Booking Submitted Successfully!
               </h2>
-              
+
               <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
                 Your booking request has been received. We will process your request within 24 hours and send you a confirmation email. You can track your booking status in your account dashboard.
               </p>
@@ -775,7 +813,7 @@ const BookingSystem = () => {
                   </div>
                   <div>
                     <p className="text-gray-400 text-sm">Total Amount</p>
-                    <p className="text-white font-medium">₹{formik.values.totalAmount.toLocaleString()}</p>
+                    <p className="text-white font-medium">PKR{formik.values.totalAmount.toLocaleString()}</p>
                   </div>
                 </div>
               </div>

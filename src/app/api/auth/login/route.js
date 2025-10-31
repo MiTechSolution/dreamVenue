@@ -22,7 +22,7 @@ export async function POST(req) {
 
     const token = generateToken(user);
 
-    return NextResponse.json({ message: "Login successful", token }, { status: 200 });
+    return NextResponse.json({ message: "Login successful", token, user}, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

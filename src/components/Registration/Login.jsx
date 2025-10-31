@@ -57,8 +57,9 @@ export default function Login() {
         password:values.password,
       };
       const  response = await LoginUser(Payload);
-      const  token = response.token;
+      const   {token,user}  = response;
       localStorage.setItem("authToken!" , token);
+      localStorage.setItem("user!" , JSON.stringify(user));
       if(response){
         toast.success("Login Successfull !" , {autoClose:2000});
         setSubmitting(false);
