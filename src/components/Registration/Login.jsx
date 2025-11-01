@@ -42,47 +42,58 @@ export default function Login() {
   // };
 
   // validation schema
-
   const LoginSchema = Yup.object().shape({
-    email:Yup.string()
-    .email("Invalid email address")
-    .required("Email is required"),
-    password:Yup.string().required("Password is required"),
-
+    email: Yup.string().email("Invalid email address").required("Email is required"),
+    password: Yup.string().required("Password is required"),
   });
 
-  const handleSubmit = async (values , {setSubmitting , resetForm}) =>{
-      const Payload = {
-        email :values.email,
-        password:values.password,
-      };
-      const  response = await LoginUser(Payload);
-      const  token = response.token;
-      localStorage.setItem("authToken!" , token);
-      if(response){
-        toast.success("Login Successfull !" , {autoClose:2000});
-        setSubmitting(false);
-        resetForm();
-        router.push("/");
-      }
+  // === submit handler ===
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    try {
       setSubmitting(true);
-  }
 
-  // useformik
+      const Payload = {
+        email: values.email,
+        password: values.password,
+      };
 
-  const formik = useFormik ({
-    initialValues : {
-      email: "",
-      password:"",
-      remember:false,
-    },
-    validationSchema:LoginSchema,
-    onSubmit:handleSubmit,
-  })
+      const response = await LoginUser(Payload);
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+      // handle API failure (safeguard)
+      if (!response || response.error) {
+        toast.error(response?.error || "Login failed", { autoClose: 3000 });
+        setSubmitting(false);
+        return;
+      }
+
+      const token = response.token;
+      // save consistent keys
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(response.user));
+
+      // redirect logic (after login)
+      const redirectPath = localStorage.getItem("redirectAfterLogin") || "/";
+      localStorage.removeItem("redirectAfterLogin");
+
+      toast.success("Login Successful!", { autoClose: 1000 });
+      resetForm();
+      router.push(redirectPath);
+    } catch (err) {
+      console.error("Login error:", err);
+      toast.error(err.message || "Something went wrong", { autoClose: 3000 });
+    } finally {
+      setSubmitting(false);
+    }
   };
+
+  const formik = useFormik({
+    initialValues: { email: "", password: "", remember: false },
+    validationSchema: LoginSchema,
+    onSubmit: handleSubmit,
+  });
+
+  const togglePasswordVisibility = () => setShowPassword((s) => !s);
+
 
   const containerVariants = {
     hidden: { opacity: 0 },

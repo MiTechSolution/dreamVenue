@@ -83,11 +83,11 @@ export default function Register() {
         const response = await RegisterUser(Payload);
           
         if(response) {
-          toast.success(response.message , {autoClose: 1000});
+          toast.success(response.message , {autoClose: 500});
           resetForm();
           setTimeout(() => {
             router.push('/Login');   
-          }, 1500);
+          }, 1000);
         }
       
        }

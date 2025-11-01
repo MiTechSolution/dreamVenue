@@ -2,8 +2,25 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const Hero = () => {
+  const router = useRouter();
+
+  const handleBookingClick = () => {
+    const user = localStorage.getItem("user");
+  
+    if (!user) {
+      // user login nahi hai → redirectAfterLogin set karo
+      localStorage.setItem("redirectAfterLogin", "/booking");
+      router.push("/Login");
+    } else {
+      router.push("/booking");
+    }
+  };
+  
+
+  
   return (
     <section
     id="home"
@@ -43,19 +60,17 @@ const Hero = () => {
         unforgettable events.
       </motion.p>
   
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, delay: 0.6 }}
-        whileHover={{ scale: 1.1 }}
-      >
-        <Link
-          href="/booking"
-          className="bg-yellow-500 hover:bg-yellow-600 text-black px-8 py-4 rounded-full text-lg font-medium inline-block shadow-lg"
-        >
-          Book Your Event <i className="fas fa-arrow-right ml-2"></i>
-        </Link>
-      </motion.div>
+      <motion.button
+  onClick={handleBookingClick}
+  initial={{ opacity: 0, scale: 0.8 }}
+  animate={{ opacity: 1, scale: 1 }}
+  transition={{ duration: 0.8, delay: 0.6 }}
+  whileHover={{ scale: 1.1 }}
+  className="bg-yellow-500 hover:bg-yellow-600 text-black px-8 py-4 rounded-full text-lg font-medium inline-block shadow-lg"
+>
+  Book Your Event <i className="fas fa-arrow-right ml-2"></i>
+</motion.button>
+
     </div>
   
     <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2">

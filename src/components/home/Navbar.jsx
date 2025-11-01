@@ -11,10 +11,40 @@ const Navbar = () => {
   const router = useRouter();
 
   // check login status when page loads
+ 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
+    // check on mount
+    const checkLogin = () => {
+      const token = localStorage.getItem("token");
+      // or you can check user: const user = localStorage.getItem("user");
+      setIsLoggedIn(!!token);
+    };
+  
+    checkLogin();
+  
+    // listen for changes made in other tabs/windows (and from same tab via storage event)
+    const handleStorage = (e) => {
+      if (e.key === "token" || e.key === "user") {
+        checkLogin();
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+  
+    // also listen for visibility change / focus (in case same tab changed localStorage)
+    const handleFocus = () => {
+      checkLogin();
+    };
+    window.addEventListener("visibilitychange", handleFocus);
+    window.addEventListener("focus", handleFocus);
+  
+    return () => {
+      window.removeEventListener("storage", handleStorage);
+      window.removeEventListener("visibilitychange", handleFocus);
+      window.removeEventListener("focus", handleFocus);
+    };
   }, []);
+  
+
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -54,11 +84,11 @@ const Navbar = () => {
             </Link>
           )}
 
-          {/* {isLoggedIn && (
-            <Link href="/adminlogin" className="hover:text-yellow-400 transition-colors">
-              Admin
+          {isLoggedIn && (
+            <Link href="/mybookings" className="hover:text-yellow-400 transition-colors">
+              MyBooking
             </Link>
-          )} */}
+          )}
 
 <Link href="/admin/login" className="hover:text-yellow-400 transition-colors">
               Admin

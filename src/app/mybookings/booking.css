@@ -1,0 +1,30 @@
+/* Add these styles to your existing CSS */
+.gold-gradient {
+  background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.font-cinzel {
+  font-family: 'Cinzel', serif;
+}
+
+/* Smooth scroll for modal */
+.modal-content {
+  scrollbar-width: thin;
+  scrollbar-color: #D4AF37 transparent;
+}
+
+.modal-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: #D4AF37;
+  border-radius: 3px;
+}
