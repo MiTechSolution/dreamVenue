@@ -625,12 +625,12 @@
                         Download Invoice
                       </button>
                       
-                      {selectedBooking.status === 'pending' && (
+                      {/* {selectedBooking.status === 'pending' && (
                         <button className="cursor-pointer flex items-center gap-2 bg-red-600 text-white px-6 py-3 rounded-xl hover:bg-red-700 transition-all duration-300 font-medium">
                           <FaTimesCircle />
                           Cancel Booking
                         </button>
-                      )}
+                      )} */}
                     </div>
                   </div>
                 </div>
