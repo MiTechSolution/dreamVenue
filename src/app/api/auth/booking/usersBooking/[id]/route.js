@@ -33,6 +33,7 @@ export async function GET(req, { params }) {
       {
         message: "User bookings fetched successfully",
         user_id: id,
+        totalBookings: result.rows.length.toString(),
         bookings: result.rows,
       },
       { status: 200 }

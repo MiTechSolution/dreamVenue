@@ -1,24 +1,20 @@
-import React from 'react'
 import ProtectedRoute from '@/components/Auth/ProtectedRoute'
+import Register from '@/components/Registration/Register'
 
-// import Signup from '@/components/Registration/SignUp'
+import React from 'react'
 
-import Signup from  '@/components/Registration/SignUp'
+ 
+ const page = () => {
 
-
-
-const page = () => {
-
-  return (
+   return (
     <>
-
-
-
-      <Signup />
-
-
-    </>
-  )
-}
-
-export default page
+     
+    
+{/* registration */}
+<Register/>
+ 
+  </>
+   )
+ }
+ 
+ export default page

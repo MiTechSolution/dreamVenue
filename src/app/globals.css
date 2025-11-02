@@ -20,7 +20,9 @@
     --foreground: #ededed;
   }
 }
-
+html{
+  scroll-behavior: smooth;
+}
 body {
   background: var(--background);
   color: var(--foreground);
@@ -32,6 +34,9 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
+.bg{
+  background: linear-gradient(135deg, #c6a538 0%, #FFD700 50%, #5b4f1c 100%);
+}
 .gold-border {
   border: 1px solid #D4AF37;
 }
@@ -98,3 +103,35 @@ body {
   );
   background-size: 200px 100%;
 }
+
+
+
+/* my booking */
+
+/* Smooth scroll for modal */
+.modal-content {
+  scrollbar-width: thin;
+  scrollbar-color: #D4AF37 transparent;
+}
+
+.modal-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: #D4AF37;
+  border-radius: 3px;
+}
+
+
+.booking-text{
+  color: rgb(34, 34, 34);
+}
+.booking-text:hover{
+  color: white;
+}
+

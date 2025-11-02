@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Head from 'next/head';
+import Link from 'next/link';
 
 const ConfirmationPage = () => {
   const [bookingData, setBookingData] = useState(null);
@@ -58,13 +59,13 @@ const ConfirmationPage = () => {
         {/* Navigation */}
         <nav className="fixed w-full z-50 bg-black/90 backdrop-blur-sm py-4 print:hidden">
           <div className="container mx-auto px-4 flex justify-between items-center">
-            <a href="/" className="text-2xl font-cinzel font-bold gold-gradient">GrandVenue Hall</a>
+          <Link href="/" className="text-2xl font-cinzel font-bold gold-gradient"> GrandVenue Hall</Link>
             <div className="hidden md:flex space-x-8">
-              <a href="/" className="hover:text-yellow-400 transition-colors">Home</a>
-              <a href="/about" className="hover:text-yellow-400 transition-colors">About</a>
-              <a href="/booking" className="hover:text-yellow-400 transition-colors">Book Now</a>
+            <Link  href="/" className="hover:text-yellow-400 transition-colors">Home</Link>
+            <Link  href="/about" className="hover:text-yellow-400 transition-colors">About</Link>
+            <Link href="/booking" className="hover:text-yellow-400 transition-colors">Book Now </Link>
             </div>
-            <a href="/booking" className="gold-button px-6 py-2 rounded-full font-medium">Book Now</a>
+            <Link href="/booking" className="gold-button px-6 py-2 rounded-full font-medium"> Book Now </Link>
           </div>
         </nav>
 
@@ -164,12 +165,12 @@ const ConfirmationPage = () => {
                 >
                   <i className="fas fa-print mr-2"></i> Print Confirmation
                 </button>
-                <a
+                <Link
                   href="/"
                   className="bg-gray-800 text-white px-6 py-3 rounded-full font-medium border border-gray-700 hover:bg-gray-700 transition-colors text-center"
                 >
                   <i className="fas fa-home mr-2"></i> Back to Home
-                </a>
+                </Link>
               </div>
             </div>
           </div>
