@@ -470,12 +470,12 @@
                           Invoice
                         </button> */}
   
-                        {booking.status === "pending" && (
+                        {/* {booking.status === "pending" && (
                           <button className="cursor-pointer flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition-all duration-300 text-sm font-medium">
                             <FaEdit />
                             Edit
                           </button>
-                        )}
+                        )} */}
                       </div>
                     </div>
                   </div>
