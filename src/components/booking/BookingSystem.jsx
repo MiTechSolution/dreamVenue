@@ -32,7 +32,7 @@ const BookingSystem = () => {
   const [selectedDates, setSelectedDates] = useState([]);
   const [bookingStatus, setBookingStatus] = useState('pending');
   const [currentDate, setCurrentDate] = useState(new Date());
-  const userID= JSON.parse(localStorage.getItem("user!"));
+  const userID= JSON.parse(localStorage.getItem("user"));
   const id = userID?.id;
   console.log("UserID in booking system:", id);
 

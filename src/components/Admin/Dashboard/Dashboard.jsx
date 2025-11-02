@@ -38,6 +38,7 @@ export default function AdminDashboard() {
     localStorage.removeItem('adminAuth');
     localStorage.removeItem('adminUser');
     localStorage.removeItem('galleryData');
+    localStorage.removeItem('user');
     router.push('/admin/login');
   };
 
