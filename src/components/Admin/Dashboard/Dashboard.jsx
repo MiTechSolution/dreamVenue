@@ -58,7 +58,7 @@ export default function AdminDashboard() {
 
   const navigation = [
     { id: 'overview', label: 'Overview', icon: <FaHome />, href: '/admin/dashboard' },
-    { id: 'bookings', label: 'Bookings', icon: <FaCalendar />, href: '/admin/dashboard/bookings' },
+    { id: 'bookings', label: 'Bookings', icon: <FaCalendar />, href: '/admin/dashboard/booking' },
     { id: 'gallery', label: 'Gallery', icon: <FaImage />, href: '/admin/dashboard/gallery' },
     { id: 'users', label: 'Users', icon: <FaUsers />, href: '/admin/dashboard/users' },
     { id: 'reports', label: 'Reports', icon: <FaChartBar />, href: '/admin/dashboard/reports' },
@@ -205,7 +205,7 @@ export default function AdminDashboard() {
               </h3>
               <div className="grid grid-cols-2 gap-4">
                 <Link
-                  href="/admin/dashboard/bookings"
+                  href="/admin/dashboard/booking"
                   className="p-4 bg-yellow-500/20 border border-yellow-500/30 rounded-xl text-yellow-400 hover:bg-yellow-500/30 transition-all text-center"
                 >
                   <FaCalendar className="text-2xl mx-auto mb-2" />
